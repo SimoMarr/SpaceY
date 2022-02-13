@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -7,8 +8,26 @@ public class CollisionHandler : MonoBehaviour
         switch(other.gameObject.tag)
         {
             case "Friendly": Debug.Log("Bumped into friendly object."); break;
-            case "Finish": Debug.Log("You finished the level!"); break;
-            default: Debug.Log("Damage taken!"); break;
+            case "Finish": NextLevel(); break;
+            default: ReloadLevel(); break;
         }    
+    }
+
+    void NextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        if(nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        {
+            nextSceneIndex = 0;
+        }
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+
+    void ReloadLevel()
+    {
+        int currentSceneIndex = (SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(currentSceneIndex);
     }
 }
