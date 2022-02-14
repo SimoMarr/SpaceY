@@ -4,6 +4,8 @@ public class Movement : MonoBehaviour
 {
     int iThrust = 3000;
     int iRotation = 200;
+    [SerializeField] AudioClip engineSound;
+    
     Rigidbody rb;
     AudioSource audioSource; 
 
@@ -26,7 +28,7 @@ public class Movement : MonoBehaviour
             rb.AddRelativeForce(Vector3.up * iThrust * Time.deltaTime);
             if(!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(engineSound);
             }
         }
         else

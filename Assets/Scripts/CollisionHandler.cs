@@ -3,9 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
-    [SerializeField] float levelLoadDelay = 1f;
+    [SerializeField] AudioClip successSound;
+    [SerializeField] AudioClip crashSound;
+
+    float levelLoadDelay = 1f;
+    
+    AudioSource audioSource;
+    bool isTransitioning = false;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void OnCollisionEnter(Collision other)
     {
+        if(isTransitioning) return;
         switch(other.gameObject.tag)
         {
             case "Friendly": Debug.Log("Bumped into friendly object."); break;
@@ -16,16 +29,20 @@ public class CollisionHandler : MonoBehaviour
 
     void SuccessSequence()
     {
+        isTransitioning = true;
         Invoke("NextLevel", levelLoadDelay);
         GetComponent<Movement>().enabled = false;
-        GetComponent<AudioSource>().Stop();
+        audioSource.Stop();
+        audioSource.PlayOneShot(successSound);
     }
 
     void CrashSequence()
     {
+        isTransitioning = true;
         Invoke("ReloadLevel", levelLoadDelay);
         GetComponent<Movement>().enabled = false;
-        GetComponent<AudioSource>().Stop();
+        audioSource.Stop();
+        audioSource.PlayOneShot(crashSound);
     }
 
     void NextLevel()
