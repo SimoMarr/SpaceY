@@ -5,6 +5,9 @@ public class Movement : MonoBehaviour
     int iThrust = 3000;
     int iRotation = 200;
     [SerializeField] AudioClip engineSound;
+    [SerializeField] ParticleSystem thrustParticles;
+    [SerializeField] ParticleSystem lesftThrustParticles;
+    [SerializeField] ParticleSystem rightThrustParticles;
     
     Rigidbody rb;
     AudioSource audioSource; 
